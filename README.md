@@ -1,164 +1,159 @@
-# Cutting a production cloud bill by two thirds
+# Cutting a production cloud bill by nearly three quarters
 
 A sanitised case study of an AWS-to-Hetzner migration I led as the sole
-infrastructure owner of a UK SaaS platform, covering 38 months of invoices.
+infrastructure owner of a UK SaaS platform, built from 38 months of AWS
+invoices and a full Hetzner inventory.
 
-Absolute figures, the employer's name, vendor quotes and server identifiers
-have been removed. Everything is **indexed to the peak month = 100**, so the
-shape and the method are intact and no confidential spend is disclosed.
+The employer's name, absolute amounts, vendor quotes and server identifiers
+have been removed. Figures are **indexed to the baseline month = 100**, so the
+method and the proportions survive and no confidential spend is disclosed.
 
 ---
 
 ## Result
 
-| Measure | Index | Reduction | Evidence |
+| | Index |
+|---|---|
+| Baseline — 2024-04: AWS invoice plus managed vector-database and database quotes | 100.0 |
+| Current — latest closed AWS invoice (2026-06) plus the whole Hetzner estate | 27.6 |
+| **Reduction** | **72%** |
+
+The internal report this comes from headlines about 76%. That figure left out
+three servers that were planned for deletion at the time. They have since been
+kept, so this write-up counts them, and the reduction is about **72%**. When
+the assumptions change, the number should change with them.
+
+## Where the reduction came from
+
+Indexed to the same baseline (baseline total = 100):
+
+| Component | Before | After | Change |
 |---|---|---|---|
-| Peak monthly run-rate (2024-04) | 100.0 | — | invoice |
-| Latest **closed invoice** month (2026-06) | 32.9 | **67.1%** | invoice |
-| Projected after planned deletions | 23.7 | **76.3%** | estimate |
+| Compute and other AWS |  74.4 |  17.4 | 77% lower |
+| Vector database |  17.7 |   6.3 | 64% lower |
+| Primary databases |   7.8 |   3.9 | 50% lower |
+| **Total** | **100.0** | **27.6** | **72% lower** |
 
-Two numbers, deliberately. The **67% is what the invoices actually show
-today**. The 76% is where the run-rate lands once servers already scheduled
-for deletion are removed, and it is an estimate, not a receipt. Reporting only
-the larger number would have been easy and would not have survived anyone
-checking.
+"After" for compute includes every other server in the Hetzner account,
+including a few that are not part of the migrated workload. That overstates
+current cost slightly, which makes the comparison conservative.
 
-## Monthly run-rate, indexed (peak = 100)
+## AWS spend, month by month (indexed to the AWS peak = 100)
+
+This series is AWS invoices only. It does not include the managed services or
+Hetzner, so it shows how AWS spend moved, not total run-rate.
 
 ```
     2023-05    0.0  ············································
     2023-06    0.0  ············································
-    2023-07    0.3  ············································
-    2023-08    9.7  ████········································
-    2023-09   36.9  ████████████████····························
-    2023-10   43.9  ███████████████████·························
-    2023-11   46.8  █████████████████████·······················
-    2023-12   44.1  ███████████████████·························
-    2024-01   73.1  ████████████████████████████████············
-    2024-02   82.7  ████████████████████████████████████········
-    2024-03   93.4  █████████████████████████████████████████···
+    2023-07    0.5  ············································
+    2023-08   13.3  ██████······································
+    2023-09   50.6  ██████████████████████······················
+    2023-10   60.2  ██████████████████████████··················
+    2023-11   64.1  ████████████████████████████················
+    2023-12   60.4  ███████████████████████████·················
+    2024-01   63.1  ████████████████████████████················
+    2024-02   76.3  ██████████████████████████████████··········
+    2024-03   90.9  ████████████████████████████████████████····
     2024-04  100.0  ████████████████████████████████████████████
-    2024-05   98.6  ███████████████████████████████████████████·
-    2024-06   88.2  ███████████████████████████████████████·····
-    2024-07   75.9  █████████████████████████████████···········
-    2024-08   55.8  █████████████████████████···················
-    2024-09   49.5  ██████████████████████······················
-    2024-10   45.9  ████████████████████························
-    2024-11   38.2  █████████████████···························
-    2024-12   37.6  █████████████████···························
-    2025-01   37.5  ████████████████····························
-    2025-02   37.3  ████████████████····························
-    2025-03   37.6  █████████████████···························
-    2025-04   37.4  ████████████████····························
-    2025-05   42.8  ███████████████████·························
-    2025-06   43.2  ███████████████████·························
-    2025-07   49.1  ██████████████████████······················
-    2025-08   56.8  █████████████████████████···················
-    2025-09   58.7  ██████████████████████████··················
-    2025-10   58.2  ██████████████████████████··················
-    2025-11   56.1  █████████████████████████···················
-    2025-12   56.5  █████████████████████████···················
-    2026-01   53.7  ████████████████████████····················
-    2026-02   48.4  █████████████████████·······················
-    2026-03   47.9  █████████████████████·······················
-    2026-04   35.7  ████████████████····························
-    2026-05   36.4  ████████████████····························
-    2026-06   32.9  ██████████████······························
+    2024-05   98.1  ███████████████████████████████████████████·
+    2024-06   83.8  █████████████████████████████████████·······
+    2024-07   67.0  █████████████████████████████···············
+    2024-08   39.3  █████████████████···························
+    2024-09   30.7  ██████████████······························
+    2024-10   25.8  ███████████·································
+    2024-11   15.3  ███████·····································
+    2024-12   14.5  ██████······································
+    2025-01   14.3  ██████······································
+    2025-02   14.0  ██████······································
+    2025-03   14.4  ██████······································
+    2025-04   14.2  ██████······································
+    2025-05   21.6  ██████████··································
+    2025-06   22.1  ██████████··································
+    2025-07   30.2  █████████████·······························
+    2025-08   40.8  ██████████████████··························
+    2025-09   43.3  ███████████████████·························
+    2025-10   42.7  ███████████████████·························
+    2025-11   39.8  █████████████████···························
+    2025-12   40.3  ██████████████████··························
+    2026-01   36.5  ████████████████····························
+    2026-02   29.3  █████████████·······························
+    2026-03   28.6  █████████████·······························
+    2026-04   11.8  █████·······································
+    2026-05   12.8  ██████······································
+    2026-06    8.0  ████········································
 ```
 
-Three things are visible in that curve and worth naming, because two of them
-are not flattering.
+AWS spend peaked in 2024-04, fell sharply through the second half of
+2024, rose again through mid-2025, and has fallen since early 2026 to about
+8% of its peak.
 
-1. **The ramp to 2024-04 was us**, not the provider. Spend grew with the
-   product, and managed-service defaults grew faster than the workload did.
-2. **The fall through late 2024 was the compute migration.** Straightforward,
-   and the largest single win.
-3. **The rise across mid-2025 is real and was not a regression to fix.** The
-   platform grew: more services, more environments, a vector database cluster
-   built and run in-house. Cost work is not a one-off project you finish; it
-   is a rate you manage while the thing underneath you keeps growing.
+## How the baseline was chosen
 
-## How the baseline was established
+The comparison was fixed before the conclusion, and the choices are stated
+openly because each one affects the result.
 
-The temptation in a cost write-up is to pick the flattering comparison. The
-method here was fixed before the numbers were looked at.
+- **The baseline is the highest AWS invoice month.** That is the favourable
+  end of the range, and it is chosen because it is a real invoice rather than
+  a projection of what spend "would have become". It is stated here so a
+  reader can discount it.
+- **Managed-service costs are current vendor quotes, held flat.** Neither
+  managed service appears in the exported AWS invoices, so their quotes stand
+  in for them. Where a quote was a range, the **lower end** is used.
+- **Hetzner is priced from inventory, not invoices.** Every server was pulled
+  from the provider API and priced by creation date against the published
+  rates. Volumes, load balancers and IPs are included.
+- **One conversion rate is used throughout**, EUR to USD at 1.1392.
 
-- **Baseline is the highest invoice-backed month**, not a projection of what
-  spend "would have become". Projected counterfactuals are unfalsifiable.
-- **Managed-service quotes are held flat across the period.** Two managed
-  services (a vector database and a hosted database tier) had no invoice
-  history in the exported data, so current vendor quotes were applied as a
-  constant baseline rather than modelled. This is conservative in one
-  direction and generous in the other; it is stated rather than hidden.
-- **Only closed invoice months count.** The month in progress at the time of
-  writing was excluded.
-- **Provider currency converted at a single stated rate**, not at whatever
-  rate made the result look best.
+## What was deliberately excluded
 
-## What was deliberately excluded from the savings claim
-
-The provider granted a material amount of promotional credit across the
-migration window. **None of it is counted as savings.**
-
-Credits reduce cash outflow. They do not reduce the cost base, they expire,
-and mixing them into an engineering result inflates it by something the
-engineering did not do. They are reported in the source document as a separate
-line so a reader can see both without the two being confused.
-
-This is the part of the report I would defend hardest. A cost number you
-cannot source is not worth making.
+The cloud provider granted a material amount of promotional credit during the
+migration. **None of it is counted.** Credits lower the bill in the months they
+apply. They do not lower the cost base, they expire, and counting them would
+make the engineering look better than it was. The source report shows them on
+a separate line.
 
 ## What moved, and in what order
 
-Sequenced by blast radius, not by size, and one at a time.
+Sequenced by risk rather than size, one piece at a time.
 
-1. **Application compute** — the bulk of the spend and the least stateful.
-   Containerised services moved to owned servers behind a proxy with
+1. **Application compute and supporting services**, the largest share of spend
+   and the least stateful, moved to owned servers behind a proxy with
    health-gated rolling deploys and automated rollback.
-2. **Vector database** — a managed cluster replaced by a self-hosted three-node
-   cluster with its own monitoring, load balancing and verified snapshot
-   backups. The open-source version of this platform is at
-   [hetzner-qdrant-cluster](https://github.com/h4nz0x/hetzner-qdrant-cluster).
-3. **Primary databases** — last, deliberately, because they carry the most
-   risk. Five managed clusters onto self-hosted replica sets, using
-   oplog-tailed continuous replication for the large tiers and dump/restore for
-   the two smallest, with a reverse-replication rollback path at every cutover.
+2. **The vector database.** A managed cluster was replaced by a self-hosted
+   three-node cluster with its own load balancing, monitoring and verified
+   snapshot backups. Built January 2026, cut over in February. The platform is
+   published as [hetzner-qdrant-cluster](https://github.com/h4nz0x/hetzner-qdrant-cluster).
+3. **The primary databases**, last because they carry the most risk. Five
+   managed clusters moved onto self-hosted replica sets. The larger ones used
+   continuous oplog replication, the two smallest used dump and restore, and
+   every cutover had a reverse-replication rollback path. Built June 2026,
+   final cutover July 2026.
 
-Before touching production, the smallest cluster was restored into a
-throwaway environment and the entire cutover rehearsed end to end against real
-data. That rehearsal took the better part of two weeks and surfaced four
-problems that would otherwise have been incidents.
+Before any production cutover, the smallest cluster was restored into a
+throwaway environment and the whole cutover rehearsed against real data,
+including deliberately injected failures, before the rehearsal counted as done.
 
-## Honest limits of the evidence
+## Limits of the evidence
 
-- Cutover dates are operator-provided. Provider resource-creation timestamps
-  corroborate when capacity was *built*, not when traffic moved. Vendor
-  cancellation records or connection-string changes would make this stronger.
-- The managed-service baselines are current quotes held flat, not historical
-  invoices. If those services were cheaper earlier, the baseline is slightly
-  overstated.
-- The 76% figure depends on deletions that were planned, not yet executed, at
-  the time of writing.
+- Cutover dates come from the operator. Provider timestamps show when
+  capacity was built, not when traffic moved.
+- The managed-service costs are current quotes held flat, not historical
+  invoices.
+- Hetzner is priced from published rates. If the provider's invoice bundles or
+  discounts anything, the invoice should replace the estimate.
+- The baseline is the single highest AWS month. A multi-month average would
+  give a smaller reduction.
 
 ## What I would do differently
 
-- **Instrument from the start.** The analysis was reconstructed from exported
-  invoices after the fact. Tagging resources by service and environment from
-  day one would have turned a forensic exercise into a dashboard.
-- **Set a cost budget per service** and alert on it the way we alert on
-  latency. Nothing paged anyone when spend tripled through 2024.
-- **Write the rollback cost down too.** Every migration decision has a reversal
-  price, and we reasoned about it without ever recording it.
-
-## Sanitisation
-
-The source document is a four-page internal report generated from exported
-provider invoices. Removed for publication: employer and product names,
-absolute currency amounts, vendor quotes, credit amounts, server names and
-identifiers, internal file paths, and precise cutover dates. Retained: the
-method, the indexed series, the sequencing, and the caveats.
-
-A redacted copy of the full report is available on request.
+- **Tag resources by service and environment from the start.** This analysis
+  was rebuilt from exported invoices after the fact. It should have been a
+  dashboard.
+- **Give each service a cost budget and alert on it**, the same way we alert on
+  latency.
+- **Write down the cost of reversing each migration step**, not only the cost
+  of taking it.
 
 ---
 
